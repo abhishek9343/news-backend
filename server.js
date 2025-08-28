@@ -3,20 +3,23 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // your NewsAPI key
+//require("dotenv").config({ path: __dirname + "/.env" });
 require('dotenv').config();
 const API_KEY = process.env.NEWS_API_KEY;
+
+console.log("Loaded API_KEY from env:", API_KEY);
 // allow frontend JS to call backend
 app.use(cors());
 
-//console.log("API_KEY:",API_KEY);
 
 // ✅ backend route: fetch news from NewsAPI
 app.get("/news", async (req, res) => {
   try {
     const query = req.query.q ||"defence"; // default india if no query given
+
     const response = await fetch(
       `https://newsapi.org/v2/everything?q=${query}&apiKey=${API_KEY}`
     );
